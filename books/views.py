@@ -4,11 +4,12 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Books
 from .serializers import BookSerializer
-
+from drf_yasg.utils import swagger_auto_schema
 
 class BookLstApiView(generics.ListAPIView):
     queryset = Books.objects.all()
     serializer_class = BookSerializer
+    
 
 
 class BookDetailView(generics.RetrieveAPIView):
