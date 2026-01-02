@@ -23,9 +23,21 @@ class BookListApiView(APIView):
         return Response(data=data, status=HTTP_200_OK)
 
 
-class BookDetailView(generics.RetrieveAPIView):
-    queryset = Books.objects.all()
-    serializer_class = BookSerializer
+# class BookDetailView(generics.RetrieveAPIView):
+#     queryset = Books.objects.all()
+#     serializer_class = BookSerializer
+
+
+class BookDetailView(APIView):
+
+    def get(self, request, pk):
+        try:
+            book = Books.objects.get(id=pk)
+            serializer = BookSerializer(book).data
+            return Response(data=serializer, status=HTTP_200_OK)
+        except Exception:
+            data = {"status": "False", "message": "Yuklanmadi "}
+            return Response(data=data , status=HTTP_400_BAD_REQUEST)
 
 
 class BookDeleteView(generics.DestroyAPIView):
