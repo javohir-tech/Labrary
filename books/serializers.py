@@ -13,7 +13,7 @@ class BookSerializer(serializers.ModelSerializer):
         title = data.get("title")
         author = data.get("author")
 
-        if not title.isalpha() :
+        if not title.isalpha():
             raise ValidationError(
                 {
                     "status": False,
@@ -31,10 +31,16 @@ class BookSerializer(serializers.ModelSerializer):
                     "message": "Bir hil kitobni bir hil muallif tomonidan qayta qosha olmaysiz",
                 }
             )
-            
+
         return data
-    
-    def validate_price(self , price) :
-        print(price)
-        
-        
+
+    def validate_price(self, price):
+        if price < 0 or price > 99999999:
+            raise ValidationError(
+                {
+                    "success": False,
+                    "message": "Narx 0 va 99999999 dan oshmasligi kerak ",
+                }
+            )
+
+        return price
