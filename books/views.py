@@ -60,27 +60,29 @@ class BookDeleteView(APIView):
 #     queryset = Books.objects.all()
 #     serializer_class = BookSerializer
 
-class BookUpdateView(APIView) :
-    
-    def put(self  , request , pk) :
-        book = get_object_or_404(Books , pk = pk);
-        newBooks = request.data
-        serializer =  BookSerializer(book , data = newBooks)
-        if serializer.is_valid() :
+
+class BookUpdateView(APIView):
+
+    def put(self, request, pk):
+        try:
+            book = Books.objects.get(id=pk)
+            newBooks = request.data
+            serializer = BookSerializer(book, data=newBooks)
+            serializer.is_valid(raise_exception=True)
             serializer.save()
             data = {
-                'success' :True ,
-                'message' : f"Sussessfully {book} updated" ,
-                'data' : serializer.data 
+                "success": True,
+                "message": f"Sussessfully {book} updated",
+                "data": serializer.data,
             }
-            return Response(data=data , status=HTTP_200_OK)
-        else:
-            data = {
-                'status' :  False ,
-                'message' : 'Error '
-            }
-            return Response(data=data , status=HTTP_400_BAD_REQUEST)
-        
+            return Response(data=data, status=HTTP_200_OK)
+        except Books.DoesNotExist:
+            data = {"status": False, "message": "Error "}
+            return Response(data=data, status=HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response(
+                {"success": False, "message": str(e)}, status=HTTP_400_BAD_REQUEST
+            )
 
 
 # class BookCreateView(generics.CreateAPIView):
