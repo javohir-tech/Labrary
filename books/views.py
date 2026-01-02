@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -37,12 +37,23 @@ class BookDetailView(APIView):
             return Response(data=serializer, status=HTTP_200_OK)
         except Exception:
             data = {"status": "False", "message": "Yuklanmadi "}
-            return Response(data=data , status=HTTP_400_BAD_REQUEST)
+            return Response(data=data, status=HTTP_400_BAD_REQUEST)
 
 
-class BookDeleteView(generics.DestroyAPIView):
-    queryset = Books.objects.all()
-    serializer_class = BookSerializer
+# class BookDeleteView(generics.DestroyAPIView):
+#     queryset = Books.objects.all()
+#     serializer_class = BookSerializer
+
+
+class BookDeleteView(APIView):
+
+    def delete(self, request, pk):
+        book = get_object_or_404(Books, pk=pk)
+        try:
+            book.delete()
+            return Response({"status": True, "message": f"Successfuly {book} deleted"})
+        except Exception:
+            return Response({"status": False, "message": "not deleted"})
 
 
 class BookUpdateView(generics.UpdateAPIView):
