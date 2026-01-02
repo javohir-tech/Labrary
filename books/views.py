@@ -95,7 +95,7 @@ class BookCreateView(APIView):
     def post(self, request):
         data = request.data
         serializer = BookSerializer(data=data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
             data = {"status": "ok", "data": serializer.data}
             print(serializer)
