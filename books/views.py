@@ -56,9 +56,31 @@ class BookDeleteView(APIView):
             return Response({"status": False, "message": "not deleted"})
 
 
-class BookUpdateView(generics.UpdateAPIView):
-    queryset = Books.objects.all()
-    serializer_class = BookSerializer
+# class BookUpdateView(generics.UpdateAPIView):
+#     queryset = Books.objects.all()
+#     serializer_class = BookSerializer
+
+class BookUpdateView(APIView) :
+    
+    def put(self  , request , pk) :
+        book = get_object_or_404(Books , pk = pk);
+        newBooks = request.data
+        serializer =  BookSerializer(book , data = newBooks)
+        if serializer.is_valid() :
+            serializer.save()
+            data = {
+                'success' :True ,
+                'message' : f"Sussessfully {book} updated" ,
+                'data' : serializer.data 
+            }
+            return Response(data=data , status=HTTP_200_OK)
+        else:
+            data = {
+                'status' :  False ,
+                'message' : 'Error '
+            }
+            return Response(data=data , status=HTTP_400_BAD_REQUEST)
+        
 
 
 # class BookCreateView(generics.CreateAPIView):
