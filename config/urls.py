@@ -20,11 +20,14 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include("books.urls")),
-    path("api/v1/auth/" , include('dj_rest_auth.urls')),
+    path("api/v1/auth/", include("dj_rest_auth.urls")),
+    path("api/v1/registration/", include("dj_rest_auth.registration.urls")),
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swaggre-ui",
     ),
-    path("redoc/" , schema_view.with_ui("redoc" , cache_timeout=9) , name='schema-redoc-ui')
+    path(
+        "redoc/", schema_view.with_ui("redoc", cache_timeout=9), name="schema-redoc-ui"
+    ),
 ]

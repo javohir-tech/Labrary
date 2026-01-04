@@ -9,6 +9,8 @@ djangorestframework = "*"
 python-decouple = "*"
 drf-yasg = "*"
 dj-rest-auth = "*"
+django-allauth = "*"
+requests = "*"
 
 [dev-packages]
 
