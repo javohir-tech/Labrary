@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
-    "whitenoise.runserver_nostatic"
+    "whitenoise.runserver_nostatic",
     # Local Apps
     "books",
 ]
